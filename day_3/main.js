@@ -8,25 +8,26 @@ function part(lines, tupleSize) {
   sum = 0
 
   lines.forEach(line => {
+    let num = 0
+
     const chars = line.split("")
-    let remaining = chars
     let maxId = 0
+    let rangeBegin = 0
 
-    chars.slice(0, chars.length - tupleSize + 1).forEach((char, index) => {
-      if (parseInt(char) > parseInt(chars[maxId])) {
-        maxId = index
-      }
-    })
-
-    let num = parseInt(chars[maxId]) * Math.pow(10, tupleSize - 1)
-
-    for (let t = tupleSize - 1; t > 0; t--) {
-      remaining = remaining.slice(maxId + 1, remaining.length)
+    for (let t = tupleSize; t > 0; t--) {
+      let rangeEnd = chars.length - t
       maxId = 0
 
       // Basically you always need to find the max as long as you still have enough remaining string to end the tupleSize.
-      remaining.slice(0, remaining.length - t + 1).forEach((char, index) => {if (parseInt(char) > parseInt(remaining[maxId])) maxId = index})
-      num += parseInt(remaining[maxId]) * (t - 1 == 0 ? 1 : Math.pow(10, t - 1))
+      chars.slice(rangeBegin, rangeEnd + 1).forEach((char, index) => {
+        if (parseInt(char) > parseInt(chars[rangeBegin + maxId])) {
+          maxId = index
+        }
+      })
+
+      num += parseInt(chars[rangeBegin + maxId]) * (t - 1 == 0 ? 1 : Math.pow(10, t - 1))
+
+      rangeBegin += maxId + 1
     }
 
     sum += num
