@@ -16,11 +16,11 @@ class Part1 < Base
         min_x = [x - 1, 0].max
         max_x = [x + 1, line.size].min
 
-        boxes = 0
-        # -1 because we know the current x will be a @
-        boxes += line[min_x..max_x].count("@") - 1
-        boxes += input[y - 1][min_x..max_x].count("@") if y > 0
-        boxes += input[y + 1][min_x..max_x].count("@") if y < input.size - 1
+        str = line[min_x..max_x]
+        str += input[y - 1][min_x..max_x] if y > 0
+        str += input[y + 1][min_x..max_x] if y < input.size - 1
+
+        boxes = str.count("@") - 1
 
         coords << [y, x] if boxes < 4
       end
