@@ -47,21 +47,12 @@ class Part2 < Part1
     total = 0
 
     columns.each do |col|
-      col[:nums].map!(&:to_s).map!(&:reverse)
+      col[:nums].map!(&:reverse)
 
-      max_digit_size = col[:nums].max { |a, b| a.chars.size <=> b.chars.size }.chars.size
-
-      reconstructed = max_digit_size.times.with_object([]) do |x, reconstructed|
-        str = ""
-
-        col[:nums].each do |num|
-          str << num[x] if x < num.size
-        end
-
-        reconstructed << str
+      reconstructed = col[:nums].first.size.times.each_with_object([]) do |x, reconstructed|
+        reconstructed << col[:nums].each_with_object("") { |num, str| str << num[x] }
       end
 
-      puts reconstructed.join(", ")
       total += reconstructed.map!(&:to_i).reduce(col[:op])
     end
 
